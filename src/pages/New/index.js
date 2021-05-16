@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import Header from '../../components/Header';
 import Title from '../../components/Title';
@@ -7,10 +7,24 @@ import Title from '../../components/Title';
 import './styles.css'
 
 function New() {
+  const [assunto, setAssunto] = useState('Suporte');
+  const [status, setStatus] = useState('Aberto');
+  const [complemento, setComplemento] = useState('');
+
   function handleRegister(e) {
       e.preventDefault()
 
       console.log('Clicou')
+  }
+
+  function handleChangeSelect(e) {
+      e.preventDefault();
+
+      setAssunto(e.target.value);
+  }
+
+  function handleOptionChange(e) {
+    setStatus(e.target.value);  
   }
   
   return(
@@ -31,8 +45,8 @@ function New() {
                         </option>
                     </select>
 
-                    <label>Cliente</label>
-                    <select>
+                    <label>Assunto</label>
+                    <select value={assunto} onChange={handleChangeSelect}>
                         <option value="Suporte">
                             Suporte
                         </option>
@@ -50,6 +64,8 @@ function New() {
                             type="radio"
                             name="radio"
                             value="Aberto"
+                            onChange={handleOptionChange}
+                            checked={status === 'Aberto'}
                         />
                         <span>Em Aberto</span>
 
@@ -57,6 +73,8 @@ function New() {
                             type="radio"
                             name="radio"
                             value="Progresso"
+                            onChange={handleOptionChange}
+                            checked={status === 'Progresso'}
                         />
                         <span>Progresso</span>
 
@@ -64,6 +82,8 @@ function New() {
                             type="radio"
                             name="radio"
                             value="Atendido"
+                            onChange={handleOptionChange}
+                            checked={status === 'Atendido'}
                         />
                         <span>Atendido</span>
                     </div>
@@ -72,6 +92,7 @@ function New() {
                     <textarea
                         type="text"
                         placeholder="Descreva seu problema (opcional)."
+                        value={(e) => setComplemento(e.target.value)}
                     />
 
                     <button type="submit">Salvar</button>
