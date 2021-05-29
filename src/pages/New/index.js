@@ -3,6 +3,7 @@ import { FiPlus } from 'react-icons/fi';
 import Header from '../../components/Header';
 import Title from '../../components/Title';
 import { AuthContext } from '../../contexts/auth';
+import { toast } from 'react-toastify'
 
 // import { Container } from './styles';
 import './styles.css'
@@ -52,10 +53,28 @@ function New() {
       loadCustomers();
   })
 
-  function handleRegister(e) {
+  async function handleRegister(e) {
       e.preventDefault()
 
-      console.log('Clicou')
+      await firebase.firestore().collection('chamadas')
+      .add({
+          created: new Date(),
+          cliente: customers[customerSelected].nomeFantasia,
+          clienteId: customers[customerSelected].id,
+          assunto: assunto,
+          status: status,
+          complemento: complemento,
+          userId: user.uid
+      })
+      .then(() => {
+          toast.success('Chamado criado com sucesso!');
+          setComplemento('');
+          setCustomerSelected(0);
+      })
+      .catch((err) => {
+          toast.error('Ops erro ao registrar, tente mais tarde.')
+          console.log(err)
+      })
   }
 
   // Chamado quando troca o assunto
@@ -150,7 +169,8 @@ function New() {
                     <textarea
                         type="text"
                         placeholder="Descreva seu problema (opcional)."
-                        value={(e) => setComplemento(e.target.value)}
+                        value={complemento}
+                        onChange={(e) => setComplemento(e.target.value)}
                     />
 
                     <button type="submit">Salvar</button>
