@@ -61,7 +61,7 @@ function New() {
       }
 
       loadCustomers();
-  }, [id])
+  })
 
   async function loadId(lista) {
       await firebase.firestore().collection('chamadas').doc(id)

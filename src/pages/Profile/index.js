@@ -20,6 +20,7 @@ function Profile() {
   const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl);
   const [imageAvatar, setImageAvatar] = useState(null);
 
+  console.log(setEmail);
   async function handleFile(e) {
     // console.log(e.target.files[0]);
     if(e.target.files[0]) {
@@ -44,6 +45,7 @@ function Profile() {
     .put(imageAvatar)
     .then(async () => {
         console.log('FOTO ENVIADA COM SUCESSO!');
+        console.log(uploadTask);
 
         await firebase.storage().ref(`images/${currentUid}`)
         .child(imageAvatar.name).getDownloadURL()
